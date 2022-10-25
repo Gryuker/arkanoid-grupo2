@@ -3,7 +3,7 @@ body{
     justify-content: center;
     width: auto;
     height: 80vh;
-    background-image: url("/public/assets/images/pizarra.png");
+    /* background-image: url("/public/assets/images/pizarra.png"); */
     background-size: cover;
 }
 
