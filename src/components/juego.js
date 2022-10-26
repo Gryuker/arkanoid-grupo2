@@ -31,7 +31,7 @@ function Juego() {
       physics: {
         default: "arcade",
         arcade: {
-          gravity: { y: 300 },
+          gravity: { y: 100 },
           debug: false,
         },
       },
