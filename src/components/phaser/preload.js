@@ -10,7 +10,13 @@ class Preload extends Phaser.Scene {
     this.load.image("fondo", "/assets/images/arkanoid/background.png");
     this.load.image("nave", "/assets/images/arkanoid/platform.png");
     this.load.image("bola", "/assets/images/arkanoid/ball.png");
-    this.load.image("ladrilloNegro", "/assets/images/arkanoid/brickBlack.png");
+    this.load.image("bloqueNegro", "/assets/images/arkanoid/brickBlack.png");
+    this.load.image("bloqueAzul", "/assets/images/arkanoid/brickBlue.png");
+    this.load.image("bloqueVerde", "/assets/images/arkanoid/brickGreen.png");
+    this.load.image("bloqueGris", "/assets/images/arkanoid/brickGrey.png");
+    this.load.image("bloqueNaranja", "/assets/images/arkanoid/brickOrange.png");
+    this.load.image("bloqueBlanco", "/assets/images/arkanoid/brickWhite.png");
+    this.load.image("bloqueAmarillo", "/assets/images/arkanoid/brickYellow.png");
     //acá irían el sprite de la nave y los botones
     /* this.load.spritesheet('dude',
             'img/dude.png',

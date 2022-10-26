@@ -31,7 +31,7 @@ class Play extends Phaser.Scene {
     this.crearBola();
 
     //agregando los obstaculos
-    /* this.crearLadrillos(); */
+    this.crearBloques();
 
     //agregando texto
     this.crearTextoInicio();
@@ -50,6 +50,9 @@ class Play extends Phaser.Scene {
       null,
       this
     );
+
+    //impacto bloque-bola
+    this.physics.add.collider(this.bola, this.bloque, this.impactoBloque, null, this);
 
     //Texto score
     this.scoreText = this.add.text(16, 16, "PUNTOS: 0", {
@@ -75,6 +78,21 @@ class Play extends Phaser.Scene {
     this.bola.setBounce(1);
     this.bola.setCollideWorldBounds(true);
     this.bola.setData("glue", true);
+  }
+
+  crearBloques(){
+    this.bloque=this.physics.add.staticGroup({
+      key:["bloqueNegro","bloqueAzul","bloqueVerde","bloqueGris","bloqueNaranja","bloqueBlanco","bloqueAmarillo"],
+      frameQuantity:1,
+      gridAlign:{
+        width:11,
+        height:3,
+        cellWidth:70,
+        cellHeight:40,
+        x:45,
+        y:70
+      }
+    });
   }
 
   crearTextoInicio() {
@@ -161,6 +179,10 @@ class Play extends Phaser.Scene {
   incrementarPuntos(puntos) {
     this.score += puntos;
     this.scoreText.setText("PUNTOS: " + this.score);
+  }
+
+  impactoBloque(bola, bloque){
+    bloque.disableBody(true, true);
   }
 
   setInitialPlatformState() {
