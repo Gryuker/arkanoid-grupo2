@@ -26,6 +26,7 @@ function Juego() {
 
     var config = {
       type: Phaser.AUTO,
+      parent: 'game',
       ...CONFIGURACION,
       physics: {
         default: "arcade",
