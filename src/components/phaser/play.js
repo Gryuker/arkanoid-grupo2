@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { LiveCounter } from "./liveCounter";
 
 class Play extends Phaser.Scene {
   constructor(config) {
@@ -7,6 +8,9 @@ class Play extends Phaser.Scene {
     this.config = config;
     this.player = null;
     this.sonido = null;
+    this.score = 0;
+    this.openingText = null;
+    this.liveCounter = new LiveCounter(this, 3);
   }
 
   create() {
@@ -20,11 +24,17 @@ class Play extends Phaser.Scene {
     //agregando plataforma como player
     this.crearNave();
 
+    //agregando contador de vidas
+    this.liveCounter.create();
+
     //agregando pelota
     this.crearBola();
 
     //agregando los obstaculos
     /* this.crearLadrillos(); */
+
+    //agregando texto
+    this.crearTextoInicio();
 
     //agregando sonido
     this.crearSonido();
@@ -33,7 +43,20 @@ class Play extends Phaser.Scene {
     /* this.input.keyboard.on("keydown-SPACE", this.flap, this); */
 
     //impacto bola-nave
-    //this.physics.add.collider(this.bola, this.nave, this.impactoNave, null, this);
+    this.physics.add.collider(
+      this.bola,
+      this.nave,
+      this.impactoNave,
+      null,
+      this
+    );
+
+    //Texto score
+    this.scoreText = this.add.text(16, 16, "PUNTOS: 0", {
+      fontSize: "20px",
+      fill: "#fff",
+      fontFamily: "verdana, arial, sans-serif",
+    });
     //this.impactoNaveSample = this.sound.add('impactoNaveSample');
   }
 
@@ -52,6 +75,21 @@ class Play extends Phaser.Scene {
     this.bola.setBounce(1);
     this.bola.setCollideWorldBounds(true);
     this.bola.setData("glue", true);
+  }
+
+  crearTextoInicio() {
+    this.openingText = this.add.text(
+      this.physics.world.bounds.width / 2,
+      this.physics.world.bounds.height / 2,
+      'Presione "ARRIBA" para comenzar',
+      {
+        fontFamily: "Monaco, Courier, monospace",
+        fontSize: "20px",
+        fill: "#fff",
+      }
+    );
+
+    this.openingText.setOrigin(0.5);
   }
 
   crearSonido() {
@@ -90,13 +128,49 @@ class Play extends Phaser.Scene {
         this.bola.setVelocityX(0);
       }
     }
-    if (this.cursors.up.isDown) {
-        if (this.bola.getData('glue')) {
-          //this.startGameSample.play();
-          this.bola.setVelocity(-60, -300);
-          this.bola.setData('glue', false);
-        }
+    if (this.bola.y > 500 && this.bola.active) {
+      let gameNotFinished = this.liveCounter.perderVida();
+      if (!gameNotFinished) {
+        //this.liveLostSample.play();
+        this.setInitialPlatformState();
       }
+    }
+    if (this.cursors.up.isDown) {
+      if (this.bola.getData("glue")) {
+        //this.startGameSample.play();
+        this.bola.setVelocity(-60, -300);
+        this.bola.setData("glue", false);
+        this.openingText.setVisible(false);
+      }
+    }
+  }
+
+  impactoNave(bola, nave) {
+    //this.naveImpactSample.play();
+    this.incrementarPuntos(1);
+    let relativeImpact = bola.x - nave.x;
+    if (relativeImpact > 0) {
+      bola.setVelocityX(8 * relativeImpact);
+    } else if (relativeImpact < 0) {
+      bola.setVelocityX(8 * relativeImpact);
+    } else {
+      bola.setVelocityX(Phaser.Math.Between(-10, 10));
+    }
+  }
+
+  incrementarPuntos(puntos) {
+    this.score += puntos;
+    this.scoreText.setText("PUNTOS: " + this.score);
+  }
+
+  setInitialPlatformState() {
+    this.nave.x = 400;
+    this.nave.y = 460;
+    this.bola.setVelocity(0, 0);
+    this.bola.x = 385;
+    this.bola.y = 430;
+    this.bola.setData("glue", true);
+    this.openingText.setVisible(true);
   }
 }
 
