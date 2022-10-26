@@ -28,9 +28,9 @@ const BarraNav = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <section>
+      <div id='game'>
         <Outlet></Outlet>
-      </section>
+      </div>
     </>
   );
 };
