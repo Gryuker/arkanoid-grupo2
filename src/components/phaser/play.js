@@ -133,6 +133,9 @@ class Play extends Phaser.Scene {
 
   crearSonido() {
     this.sonido = this.sound.add("musica");
+    this.sonido = this.sound.add("choqueBarra");
+    this.sonido = this.sound.add("choqueBloques");
+    this.sonido = this.sound.add("perder");
     const soundConfig = {
       volume: 0.5,
       loop: true,
@@ -172,6 +175,7 @@ class Play extends Phaser.Scene {
     //Perdimos?
     if (this.bola.y > 500 && this.bola.active) {
       let gameNotFinished = this.liveCounter.perderVida();
+      perder.play();
       if (!gameNotFinished) {
         //this.liveLostSample.play();
         this.setInitialPlatformState();
@@ -194,13 +198,17 @@ class Play extends Phaser.Scene {
 
   impactoNave(bola, nave) {
     //this.naveImpactSample.play();
+    this.incrementarPuntos(1);
     let relativeImpact = bola.x - nave.x;
     if (relativeImpact > 0) {
       bola.setVelocityX(8 * relativeImpact);
+      choqueBarra.play();
     } else if (relativeImpact < 0) {
       bola.setVelocityX(8 * relativeImpact);
+      choqueBarra.play();
     } else {
       bola.setVelocityX(Phaser.Math.Between(-10, 10));
+      choqueBarra.play();
     }
   }
 
