@@ -24,7 +24,7 @@ export class LiveCounter {
 
   perderVida() {
     if (this.imagenVida.countActive() == 0) {
-      //this.relatedScene.endGame();
+      this.relatedScene.endGame(true);
       return true;
     }
     let vidaPerdida = this.imagenVida.getFirstAlive();
