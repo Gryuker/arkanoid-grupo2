@@ -2,9 +2,9 @@ import "./juego.css";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Phaser from 'phaser';
-import Preload from './phaser/preload';
-import Play from './phaser/play';
-import GameOver from './phaser/gameOver';
+import {Preload} from './phaser/preload';
+import {Play} from './phaser/play';
+import {GameOver} from './phaser/gameOver';
 
 function Juego() {
   const [listo, setListo] = useState(false);

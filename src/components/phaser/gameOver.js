@@ -20,4 +20,4 @@ export class GameOver extends Phaser.Scene {
     }
 }
 
-export default GameOver;
+/* export default GameOver; */
