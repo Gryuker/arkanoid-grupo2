@@ -8,6 +8,9 @@ class Play extends Phaser.Scene {
     this.config = config;
     this.player = null;
     this.sonido = null;
+    this.soundChoqueBarra = null;
+    this.soundChoqueBloques = null;
+    this.sonidoPerder = null;
     this.score = 0;
     this.openingText = null;
     this.liveCounter = new LiveCounter(this, 3);
@@ -31,7 +34,7 @@ class Play extends Phaser.Scene {
     this.crearBola();
 
     //agregando los obstaculos
-    /* this.crearLadrillos(); */
+    this.crearBloques();
 
     //agregando texto
     this.crearTextoInicio();
@@ -39,14 +42,20 @@ class Play extends Phaser.Scene {
     //agregando sonido
     this.crearSonido();
 
-    //mover la plataforma
-    /* this.input.keyboard.on("keydown-SPACE", this.flap, this); */
-
     //impacto bola-nave
     this.physics.add.collider(
       this.bola,
       this.nave,
       this.impactoNave,
+      null,
+      this
+    );
+
+    //impacto bloque-bola
+    this.physics.add.collider(
+      this.bola,
+      this.bloque,
+      this.impactoBloque,
       null,
       this
     );
@@ -65,16 +74,49 @@ class Play extends Phaser.Scene {
   }
 
   crearNave() {
-    this.nave = this.physics.add.image(400, 460, "nave").setImmovable();
+    this.nave = this.physics.add.sprite(400, 460, "nave").setImmovable();
     this.nave.body.allowGravity = false;
     this.nave.setCollideWorldBounds(true);
+    //animación laser de nave
+    this.anims.create({
+      key: "naveLaser",
+      frames: this.anims.generateFrameNumbers("nave", {
+        frames: [0, 1, 2],
+      }),
+      frameRate: 8,
+      repeat: -1,
+    });
+    this.nave.play("naveLaser");
   }
 
   crearBola() {
     this.bola = this.physics.add.image(385, 430, "bola");
-    this.bola.setBounce(1);
+    this.bola.setBounce(0);
     this.bola.setCollideWorldBounds(true);
     this.bola.setData("glue", true);
+  }
+
+  crearBloques() {
+    this.bloque = this.physics.add.staticGroup({
+      key: [
+        "bloqueNegro"/*,
+        "bloqueAzul",
+        "bloqueVerde",
+        "bloqueGris",
+        "bloqueNaranja",
+        "bloqueBlanco",
+        "bloqueAmarillo",*/
+      ],
+      frameQuantity: 1,
+      gridAlign: {
+        width: 11,
+        height: 3,
+        cellWidth: 70,
+        cellHeight: 40,
+        x: 45,
+        y: 70,
+      },
+    });
   }
 
   crearTextoInicio() {
@@ -94,8 +136,11 @@ class Play extends Phaser.Scene {
 
   crearSonido() {
     this.sonido = this.sound.add("musica");
+    this.soundChoqueBarra = this.sound.add("choqueBarra");
+    this.soundChoqueBloques = this.sound.add("choqueBloques");
+    this.soundPerder = this.sound.add("perder");
     const soundConfig = {
-      volume: 1,
+      volume: 0.2,
       loop: true,
     };
     // this.sonido.play(soundConfig);
@@ -112,6 +157,7 @@ class Play extends Phaser.Scene {
   }
 
   update() {
+    //mover la plataforma
     if (this.cursors.left.isDown) {
       this.nave.setVelocityX(-500);
       if (this.bola.getData("glue")) {
@@ -128,27 +174,34 @@ class Play extends Phaser.Scene {
         this.bola.setVelocityX(0);
       }
     }
+
+    //Perdimos?
     if (this.bola.y > 500 && this.bola.active) {
       let gameNotFinished = this.liveCounter.perderVida();
+      this.soundPerder.play();
       if (!gameNotFinished) {
         //this.liveLostSample.play();
         this.setInitialPlatformState();
       }
     }
+
+    //disparo inicial
     if (this.cursors.up.isDown) {
       if (this.bola.getData("glue")) {
         //this.startGameSample.play();
         this.bola.setVelocity(-60, -300);
         this.bola.setData("glue", false);
         this.openingText.setVisible(false);
+        this.bola.setBounce(1);
       }
     }
   }
 
+  //metodos invocados
+
   impactoNave(bola, nave) {
-    //this.naveImpactSample.play();
-    this.incrementarPuntos(1);
     let relativeImpact = bola.x - nave.x;
+    this.soundChoqueBarra.play();
     if (relativeImpact > 0) {
       bola.setVelocityX(8 * relativeImpact);
     } else if (relativeImpact < 0) {
@@ -163,6 +216,15 @@ class Play extends Phaser.Scene {
     this.scoreText.setText("PUNTOS: " + this.score);
   }
 
+  impactoBloque(bola, bloque) {
+    bloque.disableBody(true, true);
+    this.incrementarPuntos(10);
+    this.soundChoqueBloques.play();
+    if(this.bloque.countActive()===0){
+      this.endGame(true);
+    }
+  }
+
   setInitialPlatformState() {
     this.nave.x = 400;
     this.nave.y = 460;
@@ -171,6 +233,17 @@ class Play extends Phaser.Scene {
     this.bola.y = 430;
     this.bola.setData("glue", true);
     this.openingText.setVisible(true);
+  }
+
+  endGame(completed) {
+    if(! completed) {
+      //this.gameOverSample.play();
+      this.scene.start('gameover');
+      this.score=0;
+    } else {
+      //this.winSample.play();
+      this.scene.start('congratulations');
+    }
   }
 }
 
