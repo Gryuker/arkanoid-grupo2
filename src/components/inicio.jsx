@@ -10,12 +10,12 @@ function Inicio() {
           Fundamentos de Programacion Web.
           </h3>
         <p id="inicio-texto1">
-          Bienvenidos al juego Ahorcadito realizado por el Grupo 2.
+          Bienvenidos al juego Arkanoid realizado por el Grupo 2.
         </p>
       </section>
       <section className="contenedor">
         <img
-          src="/assets/images/imagen inicio.jpg"
+          src="/assets/images/imageninicio.png"
           alt="ImagenInicio"
           className="inicio-img"
         ></img>

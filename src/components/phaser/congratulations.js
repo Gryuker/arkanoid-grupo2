@@ -9,7 +9,7 @@ class Congratulations extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('congratulations', '/assets/images/arkanoid/ErrorIcono.png');
+        this.load.image('congratulations', '/assets/images/arkanoid/congratulations.png');
         this.restartButton.preload();
     }
     
