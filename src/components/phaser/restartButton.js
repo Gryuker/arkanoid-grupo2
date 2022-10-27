@@ -6,7 +6,7 @@ export class RestartButton {
     }
   
     preload() {
-      this.relatedScene.load.spritesheet('button', '/assets/images/arkanoid/resetbtn.png', { frameWidth: 199, frameHeight: 218 });
+      this.relatedScene.load.spritesheet('button', '/assets/images/arkanoid/resetbtn.png', { frameWidth: 190, frameHeight: 220});
     }
     create() {
         this.startButton = this.relatedScene.add.sprite(400, 230, 'button').setInteractive();
