@@ -96,13 +96,13 @@ class Play extends Phaser.Scene {
   crearBloques() {
     this.bloque = this.physics.add.staticGroup({
       key: [
-        "bloqueNegro",
+        "bloqueNegro"/*,
         "bloqueAzul",
         "bloqueVerde",
         "bloqueGris",
         "bloqueNaranja",
         "bloqueBlanco",
-        "bloqueAmarillo",
+        "bloqueAmarillo",*/
       ],
       frameQuantity: 1,
       gridAlign: {
@@ -137,7 +137,7 @@ class Play extends Phaser.Scene {
     this.sonido = this.sound.add("choqueBloques");
     this.sonido = this.sound.add("perder");
     const soundConfig = {
-      volume: 0.5,
+      volume: 0.2,
       loop: true,
     };
     // this.sonido.play(soundConfig);
@@ -220,6 +220,9 @@ class Play extends Phaser.Scene {
   impactoBloque(bola, bloque) {
     bloque.disableBody(true, true);
     this.incrementarPuntos(1);
+    if(this.bloque.countActive()===0){
+      this.endGame(true);
+    }
   }
 
   setInitialPlatformState() {
@@ -232,10 +235,11 @@ class Play extends Phaser.Scene {
     this.openingText.setVisible(true);
   }
 
-  endGame(completed = false) {
+  endGame(completed) {
     if(! completed) {
       //this.gameOverSample.play();
       this.scene.start('gameover');
+      this.score=0;
     } else {
       //this.winSample.play();
       this.scene.start('congratulations');

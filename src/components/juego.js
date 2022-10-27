@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import Preload from './phaser/preload';
 import Play from './phaser/play';
 import GameOver from './phaser/gameOver';
+import Congratulations from './phaser/congratulations';
 
 function Juego() {
   const [listo, setListo] = useState(false);
@@ -20,7 +21,7 @@ function Juego() {
         velocidadInical: 0,
     };
 
-    const Escenas = [Preload, Play, GameOver];
+    const Escenas = [Preload, Play, GameOver, Congratulations];
     const crearEscena = Scene => new Scene(CONFIGURACION);
     const iniciarEscena = () => Escenas.map(crearEscena);
 

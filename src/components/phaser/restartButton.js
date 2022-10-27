@@ -18,7 +18,7 @@ export class RestartButton {
             this.startButton.setFrame(0);
         });
         this.startButton.on('pointerdown', () => {
-            this.relatedScene.scene.start('play');
+            this.relatedScene.scene.start('Play');
         });
     }
   }
