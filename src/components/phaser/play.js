@@ -88,7 +88,7 @@ class Play extends Phaser.Scene {
 
   crearBola() {
     this.bola = this.physics.add.image(385, 430, "bola");
-    this.bola.setBounce(1);
+    this.bola.setBounce(0);
     this.bola.setCollideWorldBounds(true);
     this.bola.setData("glue", true);
   }
@@ -134,7 +134,7 @@ class Play extends Phaser.Scene {
   crearSonido() {
     this.sonido = this.sound.add("musica");
     const soundConfig = {
-      volume: 1,
+      volume: 0.5,
       loop: true,
     };
     // this.sonido.play(soundConfig);
@@ -185,13 +185,15 @@ class Play extends Phaser.Scene {
         this.bola.setVelocity(-60, -300);
         this.bola.setData("glue", false);
         this.openingText.setVisible(false);
+        this.bola.setBounce(1);
       }
     }
   }
 
+  //metodos invocados
+
   impactoNave(bola, nave) {
     //this.naveImpactSample.play();
-    this.incrementarPuntos(1);
     let relativeImpact = bola.x - nave.x;
     if (relativeImpact > 0) {
       bola.setVelocityX(8 * relativeImpact);
@@ -209,6 +211,7 @@ class Play extends Phaser.Scene {
 
   impactoBloque(bola, bloque) {
     bloque.disableBody(true, true);
+    this.incrementarPuntos(1);
   }
 
   setInitialPlatformState() {
@@ -223,10 +226,10 @@ class Play extends Phaser.Scene {
 
   endGame(completed = false) {
     if(! completed) {
-      this.gameOverSample.play();
+      //this.gameOverSample.play();
       this.scene.start('gameover');
     } else {
-      this.winSample.play();
+      //this.winSample.play();
       this.scene.start('congratulations');
     }
   }
