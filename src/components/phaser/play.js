@@ -220,6 +220,16 @@ class Play extends Phaser.Scene {
     this.bola.setData("glue", true);
     this.openingText.setVisible(true);
   }
+
+  endGame(completed = false) {
+    if(! completed) {
+      this.gameOverSample.play();
+      this.scene.start('gameover');
+    } else {
+      this.winSample.play();
+      this.scene.start('congratulations');
+    }
+  }
 }
 
 export default Play;
