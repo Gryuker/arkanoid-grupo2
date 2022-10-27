@@ -39,9 +39,6 @@ class Play extends Phaser.Scene {
     //agregando sonido
     this.crearSonido();
 
-    //mover la plataforma
-    /* this.input.keyboard.on("keydown-SPACE", this.flap, this); */
-
     //impacto bola-nave
     this.physics.add.collider(
       this.bola,
@@ -52,7 +49,13 @@ class Play extends Phaser.Scene {
     );
 
     //impacto bloque-bola
-    this.physics.add.collider(this.bola, this.bloque, this.impactoBloque, null, this);
+    this.physics.add.collider(
+      this.bola,
+      this.bloque,
+      this.impactoBloque,
+      null,
+      this
+    );
 
     //Texto score
     this.scoreText = this.add.text(16, 16, "PUNTOS: 0", {
@@ -68,9 +71,19 @@ class Play extends Phaser.Scene {
   }
 
   crearNave() {
-    this.nave = this.physics.add.image(400, 460, "nave").setImmovable();
+    this.nave = this.physics.add.sprite(400, 460, "nave").setImmovable();
     this.nave.body.allowGravity = false;
     this.nave.setCollideWorldBounds(true);
+    //animación laser de nave
+    this.anims.create({
+      key: "naveLaser",
+      frames: this.anims.generateFrameNumbers("nave", {
+        frames: [0, 1, 2],
+      }),
+      frameRate: 8,
+      repeat: -1,
+    });
+    this.nave.play("naveLaser");
   }
 
   crearBola() {
@@ -80,18 +93,26 @@ class Play extends Phaser.Scene {
     this.bola.setData("glue", true);
   }
 
-  crearBloques(){
-    this.bloque=this.physics.add.staticGroup({
-      key:["bloqueNegro","bloqueAzul","bloqueVerde","bloqueGris","bloqueNaranja","bloqueBlanco","bloqueAmarillo"],
-      frameQuantity:1,
-      gridAlign:{
-        width:11,
-        height:3,
-        cellWidth:70,
-        cellHeight:40,
-        x:45,
-        y:70
-      }
+  crearBloques() {
+    this.bloque = this.physics.add.staticGroup({
+      key: [
+        "bloqueNegro",
+        "bloqueAzul",
+        "bloqueVerde",
+        "bloqueGris",
+        "bloqueNaranja",
+        "bloqueBlanco",
+        "bloqueAmarillo",
+      ],
+      frameQuantity: 1,
+      gridAlign: {
+        width: 11,
+        height: 3,
+        cellWidth: 70,
+        cellHeight: 40,
+        x: 45,
+        y: 70,
+      },
     });
   }
 
@@ -130,6 +151,7 @@ class Play extends Phaser.Scene {
   }
 
   update() {
+    //mover la plataforma
     if (this.cursors.left.isDown) {
       this.nave.setVelocityX(-500);
       if (this.bola.getData("glue")) {
@@ -146,6 +168,8 @@ class Play extends Phaser.Scene {
         this.bola.setVelocityX(0);
       }
     }
+
+    //Perdimos?
     if (this.bola.y > 500 && this.bola.active) {
       let gameNotFinished = this.liveCounter.perderVida();
       if (!gameNotFinished) {
@@ -153,6 +177,8 @@ class Play extends Phaser.Scene {
         this.setInitialPlatformState();
       }
     }
+
+    //disparo inicial
     if (this.cursors.up.isDown) {
       if (this.bola.getData("glue")) {
         //this.startGameSample.play();
@@ -181,7 +207,7 @@ class Play extends Phaser.Scene {
     this.scoreText.setText("PUNTOS: " + this.score);
   }
 
-  impactoBloque(bola, bloque){
+  impactoBloque(bola, bloque) {
     bloque.disableBody(true, true);
   }
 

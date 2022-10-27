@@ -8,7 +8,8 @@ class Preload extends Phaser.Scene {
   preload() {
     this.load.audio("musica", "/assets/sounds/BGM-Echelon.mp3");
     this.load.image("fondo", "/assets/images/arkanoid/background.png");
-    this.load.image("nave", "/assets/images/arkanoid/platform.png");
+    this.load.spritesheet('nave', '/assets/images/arkanoid/nave.png', { frameWidth: 97, frameHeight: 26 });
+    //this.load.image("nave", "/assets/images/arkanoid/platform.png");
     this.load.image("bola", "/assets/images/arkanoid/ball.png");
     this.load.image("bloqueNegro", "/assets/images/arkanoid/brickBlack.png");
     this.load.image("bloqueAzul", "/assets/images/arkanoid/brickBlue.png");
