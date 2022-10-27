@@ -8,6 +8,9 @@ class Play extends Phaser.Scene {
     this.config = config;
     this.player = null;
     this.sonido = null;
+    this.soundChoqueBarra = null;
+    this.soundChoqueBloques = null;
+    this.sonidoPerder = null;
     this.score = 0;
     this.openingText = null;
     this.liveCounter = new LiveCounter(this, 3);
@@ -133,9 +136,9 @@ class Play extends Phaser.Scene {
 
   crearSonido() {
     this.sonido = this.sound.add("musica");
-    this.sonido = this.sound.add("choqueBarra");
-    this.sonido = this.sound.add("choqueBloques");
-    this.sonido = this.sound.add("perder");
+    this.soundChoqueBarra = this.sound.add("choqueBarra");
+    this.soundChoqueBloques = this.sound.add("choqueBloques");
+    this.soundPerder = this.sound.add("perder");
     const soundConfig = {
       volume: 0.2,
       loop: true,
@@ -175,7 +178,7 @@ class Play extends Phaser.Scene {
     //Perdimos?
     if (this.bola.y > 500 && this.bola.active) {
       let gameNotFinished = this.liveCounter.perderVida();
-      perder.play();
+      this.soundPerder.play();
       if (!gameNotFinished) {
         //this.liveLostSample.play();
         this.setInitialPlatformState();
@@ -197,18 +200,14 @@ class Play extends Phaser.Scene {
   //metodos invocados
 
   impactoNave(bola, nave) {
-    //this.naveImpactSample.play();
-    this.incrementarPuntos(1);
     let relativeImpact = bola.x - nave.x;
+    this.soundChoqueBarra.play();
     if (relativeImpact > 0) {
       bola.setVelocityX(8 * relativeImpact);
-      choqueBarra.play();
     } else if (relativeImpact < 0) {
       bola.setVelocityX(8 * relativeImpact);
-      choqueBarra.play();
     } else {
       bola.setVelocityX(Phaser.Math.Between(-10, 10));
-      choqueBarra.play();
     }
   }
 
@@ -219,7 +218,8 @@ class Play extends Phaser.Scene {
 
   impactoBloque(bola, bloque) {
     bloque.disableBody(true, true);
-    this.incrementarPuntos(1);
+    this.incrementarPuntos(10);
+    this.soundChoqueBloques.play();
     if(this.bloque.countActive()===0){
       this.endGame(true);
     }
