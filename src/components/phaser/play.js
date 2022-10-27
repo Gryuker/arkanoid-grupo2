@@ -8,6 +8,9 @@ class Play extends Phaser.Scene {
     this.config = config;
     this.player = null;
     this.sonido = null;
+    this.soundChoqueBarra = null;
+    this.soundChoqueBloques = null;
+    this.sonidoPerder = null;
     this.score = 0;
     this.openingText = null;
     this.liveCounter = new LiveCounter(this, 3);
@@ -96,13 +99,13 @@ class Play extends Phaser.Scene {
   crearBloques() {
     this.bloque = this.physics.add.staticGroup({
       key: [
-        "bloqueNegro",
+        "bloqueNegro"/*,
         "bloqueAzul",
         "bloqueVerde",
         "bloqueGris",
         "bloqueNaranja",
         "bloqueBlanco",
-        "bloqueAmarillo",
+        "bloqueAmarillo",*/
       ],
       frameQuantity: 1,
       gridAlign: {
@@ -133,8 +136,11 @@ class Play extends Phaser.Scene {
 
   crearSonido() {
     this.sonido = this.sound.add("musica");
+    this.soundChoqueBarra = this.sound.add("choqueBarra");
+    this.soundChoqueBloques = this.sound.add("choqueBloques");
+    this.soundPerder = this.sound.add("perder");
     const soundConfig = {
-      volume: 0.5,
+      volume: 0.2,
       loop: true,
     };
     // this.sonido.play(soundConfig);
@@ -172,6 +178,7 @@ class Play extends Phaser.Scene {
     //Perdimos?
     if (this.bola.y > 500 && this.bola.active) {
       let gameNotFinished = this.liveCounter.perderVida();
+      this.soundPerder.play();
       if (!gameNotFinished) {
         //this.liveLostSample.play();
         this.setInitialPlatformState();
@@ -193,8 +200,8 @@ class Play extends Phaser.Scene {
   //metodos invocados
 
   impactoNave(bola, nave) {
-    //this.naveImpactSample.play();
     let relativeImpact = bola.x - nave.x;
+    this.soundChoqueBarra.play();
     if (relativeImpact > 0) {
       bola.setVelocityX(8 * relativeImpact);
     } else if (relativeImpact < 0) {
@@ -211,7 +218,11 @@ class Play extends Phaser.Scene {
 
   impactoBloque(bola, bloque) {
     bloque.disableBody(true, true);
-    this.incrementarPuntos(1);
+    this.incrementarPuntos(10);
+    this.soundChoqueBloques.play();
+    if(this.bloque.countActive()===0){
+      this.endGame(true);
+    }
   }
 
   setInitialPlatformState() {
@@ -225,11 +236,10 @@ class Play extends Phaser.Scene {
   }
 
   endGame(completed) {
-    console.log('entrando a endGame');
-    if(!completed) {
+    if(! completed) {
       //this.gameOverSample.play();
-      console.log('entrando a GameOver');
-      this.scene.start('GameOver');
+      this.scene.start('gameover');
+      this.score=0;
     } else {
       //this.winSample.play();
       console.log('entrando a Congratulations');

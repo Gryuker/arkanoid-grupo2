@@ -27,6 +27,9 @@ class Preload extends Phaser.Scene {
             { frameWidth: 16, frameHeight: 16 }); */
     //acá van todos los audios
     this.load.audio('impactoNaveSample', '/assets/sounds/click.wav');
+    this.load.audio('choqueBarra', '/assets/sounds/choque_barra.mp3');
+    this.load.audio('choqueBloques', '/assets/sounds/choque_bloques.mp3');
+    this.load.audio('perder', '/assets/sounds/perder.mp3');
   }
 
   create() {
