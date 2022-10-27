@@ -224,12 +224,15 @@ class Play extends Phaser.Scene {
     this.openingText.setVisible(true);
   }
 
-  endGame(completed = false) {
-    if(! completed) {
+  endGame(completed) {
+    console.log('entrando a endGame');
+    if(!completed) {
       //this.gameOverSample.play();
-      this.scene.start('gameover');
+      console.log('entrando a GameOver');
+      this.scene.start('GameOver');
     } else {
       //this.winSample.play();
+      console.log('entrando a Congratulations');
       this.scene.start('congratulations');
     }
   }

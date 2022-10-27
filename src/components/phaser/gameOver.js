@@ -9,15 +9,15 @@ class GameOver extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('gameover', '/brickGreen.png');
+        this.load.image('gameoverimg', '/brickGreen.png');
         //this.restartButton.preload();
     }
     
     create() {
         this.add.image(410, 250, 'fondo');
         //this.restartButton.create();
-        this.gameoverImage = this.add.image(400, 90, 'gameover');
+        this.gameoverImage = this.add.image(400, 90, 'gameoverimg');
     }
 }
 
-/* export default GameOver; */
+export default GameOver;

@@ -2,9 +2,9 @@ import "./juego.css";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Phaser from 'phaser';
-import {Preload} from './phaser/preload';
-import {Play} from './phaser/play';
-import {GameOver} from './phaser/gameOver';
+import Preload from './phaser/preload';
+import Play from './phaser/play';
+import GameOver from './phaser/gameOver';
 
 function Juego() {
   const [listo, setListo] = useState(false);
@@ -23,7 +23,6 @@ function Juego() {
     const Escenas = [Preload, Play, GameOver];
     const crearEscena = Scene => new Scene(CONFIGURACION);
     const iniciarEscena = () => Escenas.map(crearEscena);
-
 
     var config = {
       type: Phaser.AUTO,
