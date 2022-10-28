@@ -67,6 +67,7 @@ class Play extends Phaser.Scene {
       fontFamily: "verdana, arial, sans-serif",
     });
     //this.impactoNaveSample = this.sound.add('impactoNaveSample');
+    setInitialPlatformState();
   }
 
   crearFondo() {
@@ -226,11 +227,11 @@ class Play extends Phaser.Scene {
   }
 
   setInitialPlatformState() {
-    this.nave.x = 400;
-    this.nave.y = 460;
+    this.nave.x = this.config.posicionInicialNave.x;
+    this.nave.y = this.config.posicionInicialNave.y;
     this.bola.setVelocity(0, 0);
-    this.bola.x = 385;
-    this.bola.y = 430;
+    this.bola.x = this.config.posicionInicialBola.x;
+    this.bola.y = this.config.posicionInicialBola.y;
     this.bola.setData("glue", true);
     this.openingText.setVisible(true);
   }
