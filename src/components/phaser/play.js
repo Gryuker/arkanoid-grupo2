@@ -17,10 +17,9 @@ class Play extends Phaser.Scene {
     this.liveCounter = new LiveCounter(this, 3);
     this.levelCreator=new LevelCreator(this);
     this.bloque=null;
-    this.nivel=1;
   }
 
-  create() {
+  create(nivel) {
     //condiciones iniciales
     this.physics.world.setBoundsCollision(true, true, true, false);
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -38,7 +37,7 @@ class Play extends Phaser.Scene {
     this.crearBola();
 
     //agregando los obstaculos
-    this.crearBloques(this.nivel);
+    this.crearBloques(nivel);
 
     //agregando texto
     this.crearTextoInicio();
