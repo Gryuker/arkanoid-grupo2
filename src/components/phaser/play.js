@@ -67,7 +67,8 @@ class Play extends Phaser.Scene {
       fontFamily: "verdana, arial, sans-serif",
     });
     //this.impactoNaveSample = this.sound.add('impactoNaveSample');
-    setInitialPlatformState();
+
+    this.setInitialState();
   }
 
   crearFondo() {
@@ -123,7 +124,7 @@ class Play extends Phaser.Scene {
   crearTextoInicio() {
     this.openingText = this.add.text(
       this.physics.world.bounds.width / 2,
-      this.physics.world.bounds.height / 2 * 1.5,
+      (this.physics.world.bounds.height / 2) * 1.5,
       'Presione "ARRIBA" para comenzar',
       {
         fontFamily: "Monaco, Courier, monospace",
@@ -182,7 +183,7 @@ class Play extends Phaser.Scene {
       this.soundPerder.play();
       if (!gameNotFinished) {
         //this.liveLostSample.play();
-        this.setInitialPlatformState();
+        this.setInitialState();
       }
     }
 
@@ -221,15 +222,18 @@ class Play extends Phaser.Scene {
     bloque.disableBody(true, true);
     this.incrementarPuntos(10);
     this.soundChoqueBloques.play();
-    if(this.bloque.countActive()===0){
+    if (this.bloque.countActive() === 0) {
       this.endGame(true);
     }
   }
 
-  setInitialPlatformState() {
+  setInitialState() {
     this.nave.x = this.config.posicionInicialNave.x;
     this.nave.y = this.config.posicionInicialNave.y;
-    this.bola.setVelocity(0, 0);
+    this.bola.setVelocity(
+      this.config.velocidadInicial,
+      this.config.velocidadInicial
+    );
     this.bola.x = this.config.posicionInicialBola.x;
     this.bola.y = this.config.posicionInicialBola.y;
     this.bola.setData("glue", true);
@@ -237,14 +241,14 @@ class Play extends Phaser.Scene {
   }
 
   endGame(completed) {
-    if(! completed) {
+    if (!completed) {
       //this.gameOverSample.play();
-      this.scene.start('gameover');
-      this.score=0;
+      this.scene.start("gameover");
+      this.score = 0;
     } else {
       //this.winSample.play();
-      console.log('entrando a Congratulations');
-      this.scene.start('congratulations');
+      console.log("entrando a Congratulations");
+      this.scene.start("congratulations");
     }
   }
 }
