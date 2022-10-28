@@ -19,7 +19,7 @@ function Juego() {
         },
         posicionInicialNave: { x: 400, y: 460 },
         posicionInicialBola:{ x: 385, y: 430 },
-        velocidadInical: 0,
+        velocidadInicial: 0,
     };
 
     const Escenas = [Preload, Play, GameOver, Congratulations];
