@@ -242,6 +242,7 @@ class Play extends Phaser.Scene {
       this.score=0;
     } else {
       //this.winSample.play();
+      console.log('entrando a Congratulations');
       this.scene.start('congratulations');
     }
   }

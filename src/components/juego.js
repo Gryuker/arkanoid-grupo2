@@ -25,7 +25,6 @@ function Juego() {
     const crearEscena = Scene => new Scene(CONFIGURACION);
     const iniciarEscena = () => Escenas.map(crearEscena);
 
-
     var config = {
       type: Phaser.AUTO,
       parent: 'game',

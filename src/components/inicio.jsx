@@ -14,12 +14,6 @@ function Inicio() {
         </p>
       </section>
       <section className="contenedor">
-        <img
-          src="/assets/images/imageninicio.png"
-          alt="ImagenInicio"
-          className="inicio-img"
-        ></img>
-        <p id="inicio-texto2">Haga click en "Jugar" para poder comenzar.</p>
         <Button
           className="boton-inicio"
           variant="primary"
@@ -27,9 +21,7 @@ function Inicio() {
           border="ligth"
           onClick={()=>sonidoClic.play()}
           href={"./juego"}
-        >
-          Jugar
-        </Button>{" "}
+        />
       </section>
     </>
   );
