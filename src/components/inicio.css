@@ -28,11 +28,7 @@ body{
     align-items: center;
     width: auto;
     height: 60vh;
-}
-
-.contenedor img{
-    height: 40vh;
-    width: auto;
+    padding-top: 5vh;
 }
 
 .inicio-img img{
@@ -47,6 +43,12 @@ body{
 
 .boton-inicio{
     font-size: 30px;
-    width: 50vh;
-    height: 10vh;
+    width: 90vh;
+    height: 50vh;
+    background-image: url("/public/assets/images/ImagenInicio.png");
+    background-size: cover;
+}
+
+.boton-inicio:hover{
+    box-shadow: 20px 30px 40px blue;
 }
