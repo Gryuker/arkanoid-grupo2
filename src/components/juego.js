@@ -17,7 +17,8 @@ function Juego() {
             width: 800,
             height: 500
         },
-        posicionInicial: { x: 400, y: 550 },
+        posicionInicialNave: { x: 400, y: 460 },
+        posicionInicialBola:{ x: 385, y: 430 },
         velocidadInical: 0,
     };
 
