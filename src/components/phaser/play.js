@@ -99,21 +99,21 @@ class Play extends Phaser.Scene {
   crearBloques() {
     this.bloque = this.physics.add.staticGroup({
       key: [
-        "bloqueNegro"/*,
-        "bloqueAzul",
-        "bloqueVerde",
-        "bloqueGris",
-        "bloqueNaranja",
-        "bloqueBlanco",
-        "bloqueAmarillo",*/
+        "bloque7",
+        "bloque6",
+        "bloque5",
+        "bloque4",
+        "bloque3",
+        "bloque2",
+        "bloque1",
       ],
-      frameQuantity: 1,
+      frameQuantity: 13,
       gridAlign: {
-        width: 11,
-        height: 3,
-        cellWidth: 70,
-        cellHeight: 40,
-        x: 45,
+        width: 13,
+        height: 7,
+        cellWidth: 60,
+        cellHeight: 37,
+        x: 43,
         y: 70,
       },
     });
@@ -122,7 +122,7 @@ class Play extends Phaser.Scene {
   crearTextoInicio() {
     this.openingText = this.add.text(
       this.physics.world.bounds.width / 2,
-      this.physics.world.bounds.height / 2,
+      this.physics.world.bounds.height / 2 * 1.5,
       'Presione "ARRIBA" para comenzar',
       {
         fontFamily: "Monaco, Courier, monospace",
@@ -242,6 +242,7 @@ class Play extends Phaser.Scene {
       this.score=0;
     } else {
       //this.winSample.play();
+      console.log('entrando a Congratulations');
       this.scene.start('congratulations');
     }
   }
