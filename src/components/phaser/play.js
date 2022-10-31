@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { LiveCounter } from "./liveCounter";
+import {LevelCreator} from "./levelCreator";
 
 class Play extends Phaser.Scene {
   constructor(config) {
@@ -14,9 +15,11 @@ class Play extends Phaser.Scene {
     this.score = 0;
     this.openingText = null;
     this.liveCounter = new LiveCounter(this, 3);
+    this.levelCreator=new LevelCreator(this);
+    this.bloque=null;
   }
 
-  create() {
+  create(nivel) {
     //condiciones iniciales
     this.physics.world.setBoundsCollision(true, true, true, false);
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -34,7 +37,7 @@ class Play extends Phaser.Scene {
     this.crearBola();
 
     //agregando los obstaculos
-    this.crearBloques();
+    this.crearBloques(nivel);
 
     //agregando texto
     this.crearTextoInicio();
@@ -67,7 +70,7 @@ class Play extends Phaser.Scene {
       fontFamily: "verdana, arial, sans-serif",
     });
     //this.impactoNaveSample = this.sound.add('impactoNaveSample');
-    this.setInitialPlatformState();
+    this.setInitialState();
   }
 
   crearFondo() {
@@ -97,33 +100,14 @@ class Play extends Phaser.Scene {
     this.bola.setData("glue", true);
   }
 
-  crearBloques() {
-    this.bloque = this.physics.add.staticGroup({
-      key: [
-        "bloque7",
-        "bloque6",
-        "bloque5",
-        "bloque4",
-        "bloque3",
-        "bloque2",
-        "bloque1",
-      ],
-      frameQuantity: 13,
-      gridAlign: {
-        width: 13,
-        height: 7,
-        cellWidth: 60,
-        cellHeight: 37,
-        x: 43,
-        y: 70,
-      },
-    });
+  crearBloques(nivel) {
+    this.bloque=this.levelCreator.crearNivel(nivel);
   }
 
   crearTextoInicio() {
     this.openingText = this.add.text(
       this.physics.world.bounds.width / 2,
-      this.physics.world.bounds.height / 2 * 1.5,
+      (this.physics.world.bounds.height / 2) * 1.5,
       'Presione "ARRIBA" para comenzar',
       {
         fontFamily: "Monaco, Courier, monospace",
@@ -182,7 +166,7 @@ class Play extends Phaser.Scene {
       this.soundPerder.play();
       if (!gameNotFinished) {
         //this.liveLostSample.play();
-        this.setInitialPlatformState();
+        this.setInitialState();
       }
     }
 
@@ -221,15 +205,18 @@ class Play extends Phaser.Scene {
     bloque.disableBody(true, true);
     this.incrementarPuntos(10);
     this.soundChoqueBloques.play();
-    if(this.bloque.countActive()===0){
+    if (this.bloque.countActive() === 0) {
       this.endGame(true);
     }
   }
 
-  setInitialPlatformState() {
+  setInitialState() {
     this.nave.x = this.config.posicionInicialNave.x;
     this.nave.y = this.config.posicionInicialNave.y;
-    this.bola.setVelocity(0, 0);
+    this.bola.setVelocity(
+      this.config.velocidadInicial,
+      this.config.velocidadInicial
+    );
     this.bola.x = this.config.posicionInicialBola.x;
     this.bola.y = this.config.posicionInicialBola.y;
     this.bola.setData("glue", true);
@@ -237,14 +224,14 @@ class Play extends Phaser.Scene {
   }
 
   endGame(completed) {
-    if(! completed) {
+    if (!completed) {
       //this.gameOverSample.play();
-      this.scene.start('gameover');
-      this.score=0;
+      this.scene.start("gameover");
+      this.score = 0;
     } else {
       //this.winSample.play();
-      console.log('entrando a Congratulations');
-      this.scene.start('congratulations');
+      console.log("entrando a Congratulations");
+      this.scene.start("congratulations");
     }
   }
 }
