@@ -70,7 +70,6 @@ class Play extends Phaser.Scene {
       fontFamily: "verdana, arial, sans-serif",
     });
     //this.impactoNaveSample = this.sound.add('impactoNaveSample');
-
     this.setInitialState();
   }
 
